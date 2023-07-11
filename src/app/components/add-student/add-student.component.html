@@ -1,0 +1,134 @@
+<!-- Title group  -->
+<div class="title-group">
+  <h1 class="mat-h1">Add Student</h1>
+  <mat-divider fxFlex="1 0"></mat-divider>
+</div>
+
+<!-- Form -->
+<div class="inner-wrapper">
+  <form
+    [formGroup]="studentForm"
+    (ngSubmit)="submitStudentForm()"
+    #resetStudentForm="ngForm"
+    novalidate
+  >
+    <!-- Left block -->
+    <mat-card>
+      <div class="controlers-wrapper">
+        <!-- Name -->
+        <mat-form-field class="example-full-width">
+          <input
+            matInput
+            placeholder="Student name"
+            formControlName="student_name"
+          />
+          <mat-error *ngIf="handleError('student_name', 'required')">
+            You must provide a <strong>student name</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Email -->
+        <mat-form-field class="example-full-width">
+          <input
+            matInput
+            placeholder="Student email"
+            formControlName="student_email"
+          />
+          <mat-error *ngIf="handleError('student_email', 'required')">
+            You must provide a<strong>student email</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Section -->
+        <mat-form-field>
+          <mat-label>Section</mat-label>
+          <mat-select formControlName="section">
+            <mat-option
+              [value]="sectioinArray"
+              *ngFor="let sectioinArray of SectioinArray"
+              >{{ sectioinArray }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="handleError('section', 'required')">
+            Section is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </mat-card>
+
+    <!-- Right block -->
+    <mat-card>
+      <div class="controlers-wrapper">
+        <!-- Add subjects -->
+        <mat-form-field class="multiple-items">
+          <mat-chip-grid #chipGrid>
+            <mat-chip
+              *ngFor="let subjectArray of subjectArray"
+              [selectable]="selectable"
+              [removable]="removable"
+              (removed)="remove(subjectArray)"
+            >
+              {{ subjectArray.name }}
+              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+            </mat-chip>
+            <input
+              matInput
+              placeholder="Add subject"
+              [matChipInputFor]="chipGrid"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              [matChipInputAddOnBlur]="addOnBlur"
+              (matChipInputTokenEnd)="add($event)"
+            />
+          </mat-chip-grid>
+          <i
+            class="material-icons tooltip-info"
+            matTooltip="Enter subject name and press enter to add subjects"
+          >
+            info
+          </i>
+        </mat-form-field>
+
+        <!-- Date of birth -->
+        <mat-form-field>
+          <input
+            matInput
+            readonly
+            [matDatepicker]="picker"
+            placeholder="Date of birth"
+            formControlName="dob"
+            (dateChange)="formatDate($event)"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="handleError('dob', 'required')">
+            Date of birth is required
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Gender -->
+        <div class="misc-bottom-padding">
+          <mat-label>Gender:</mat-label>
+          <mat-radio-group
+            aria-label="Select an option"
+            formControlName="gender"
+          >
+            <mat-radio-button value="Male">Male</mat-radio-button>
+            <mat-radio-button value="Female">Female</mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </div>
+    </mat-card>
+
+    <!-- Submit & Reset -->
+    <mat-card>
+      <div class="full-wrapper button-wrapper">
+        <div class="button-wrapper">
+          <button mat-flat-button color="warn">Submit</button>
+        </div>
+      </div>
+    </mat-card>
+  </form>
+</div>
